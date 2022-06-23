@@ -3,30 +3,24 @@ library(rgeoda)
 library(terra)
 library(sf)
 library(regional)
-create_raster_pca = function(x, no_pc = 3){
-  pca = prcomp(as.data.frame(x))
-  cf_pca = terra::predict(x, pca)
-  cf_pca[[1:no_pc]]
-}
-scale_values = function(x){
-  (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
-}
 # read input multidimensional raster data ---------------------------------
 input_raster = rast("raw-data/all_ned.tif")
-input_raster_pca = create_raster_pca(input_raster)
-input_raster_pca = scale_values(input_raster_pca)
+plot(input_raster)
 
 # create superpixels ------------------------------------------------------
-superpixels = supercells(x = input_raster_pca, 
-                         step = 15, compactness = 0.2, dist_fun = "euclidean",
-                         minarea = 12, transform = "to_LAB")
+superpixels = supercells(x = input_raster, step = 15, compactness = 0.1,
+                         dist_fun = "jensen-shannon", minarea = 12)
 
 # prepare skater regionalization ------------------------------------------
 weight_df = st_drop_geometry(superpixels[, !colnames(superpixels) %in% c("supercells", "x", "y")])
+weight_dist = philentropy::distance(weight_df, method = "jensen-shannon", as.dist.obj = TRUE)
+weight_dist = as.vector(weight_dist)
 rook_w = rook_weights(superpixels)
 
 # perform skater regionalization ------------------------------------------
-skater_results = skater(468, rook_w, weight_df, random_seed = 1, cpu_threads = 1)
+skater_results = skater(468, rook_w, weight_df,
+                        random_seed = 1, cpu_threads = 1,
+                        rdist = weight_dist)
 
 # split clusters into separate polygons -----------------------------------
 superpixels$cluster = skater_results$Clusters
@@ -54,7 +48,7 @@ regions$iso = reg_isolation(regions[vars], input_raster,
 
 weighted.mean(regions$inh, regions$area_km2)
 mean(regions$iso)
-# > weighted.mean(regions$inh, regions$area_km2)
-# [1] 0.1467081
-# > mean(regions$iso)
-# [1] 0.3721053
+# > round(weighted.mean(regions$inh, regions$area_km2), 2)
+# [1] 0.13
+# > round(mean(regions$iso), 2)
+# [1] 0.48
