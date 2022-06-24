@@ -28,5 +28,5 @@ The original data can be found at https://doi.org/10.5270/ESA-c5d3d65.
 ## Application examples
 
 1. Fractional land cover data - [`R/fractional_land_cover_data/large_regions_jsd.R`](R/fractional_land_cover_data/large_regions_jsd.R), [`R/fractional_land_cover_data/large_regions_euclidean.R`](R/fractional_land_cover_data/large_regions_euclidean.R), [`R/fractional_land_cover_data/small_regions_jsd.R`](R/fractional_land_cover_data/small_regions_jsd.R), [`R/fractional_land_cover_data/small_regions_euclidean.R`](R/fractional_land_cover_data/small_regions_euclidean.R)
-2. Time-series data - [R/time-series_data/climate_euc.R](R/time-series_data/climate_euc.R) and [R/time-series_data/climate_dtw.R](R/time-series_data/climate_dtw.R)
+2. Time-series data - [`R/time-series_data/climate_euc.R`](R/time-series_data/climate_euc.R) and [`R/time-series_data/climate_dtw.R`](R/time-series_data/climate_dtw.R)
 3. Pattern data - [`R/pattern_data/dunes.R`](R/pattern_data/dunes.R)
