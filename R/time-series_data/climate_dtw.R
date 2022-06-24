@@ -4,6 +4,7 @@ library(supercells)
 library(rgeoda)
 library(purrr)
 library(tmap)
+# create helper functions -------------------------------------------------
 get_dtw2d = function(x){
   dist_mat = matrix(nrow = nrow(x), ncol = nrow(x))
   for (i in seq_len(nrow(x))){
@@ -33,13 +34,19 @@ regionalize_dtw_2d = function(k, superpixels, ...){
   regions$k = k
   return(regions)
 }
+# read scaled time-series of temperature and precipitation ----------------
 ta = rast("raw-data/ta_scaled.tif")
 pr = rast("raw-data/pr_scaled.tif")
 
-clim = c(ta, pr)
+tm_shape(ta) + 
+  tm_raster(style = "cont")
+tm_shape(pr) + 
+  tm_raster(style = "cont")
 
-sp = supercells(clim, step = 15, compactness = 0.01, dist_fun = dtw_2d)
+# create supercells based on the 2D time-series ---------------------------
+sp = supercells(c(ta, pr), step = 15, compactness = 0.01, dist_fun = dtw_2d)
 
+# create 3, 7, 11, and 15 regions based on the 2D time-series -------------
 sp_regions = map_dfr(c(3, 7, 11, 15), regionalize_dtw_2d, sp)
 
 tm_shape(sp_regions) +
