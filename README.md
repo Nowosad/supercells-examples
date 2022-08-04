@@ -1,8 +1,8 @@
 # Extended SLIC superpixels algorithm for applications to non-imagery geospatial rasters
 
-<!--[![DOI](https://img.shields.io/badge/DOI-10.1007%2Fs10980--020--01135--0-blue)](https://doi.org/10.1007/s10980-020-01135-0)-->
+[![DOI](https://img.shields.io/badge/DOI-10.1016/j.jag.2022.102935-blue)](https://doi.org/10.1016/j.jag.2022.102935)
 
-This repository contains the code and data for application examples presented in Nowosad and Stepinski *Extended SLIC superpixels algorithm for applications to non-imagery geospatial rasters*
+This repository contains the code and data for application examples presented in Nowosad and Stepinski *Extended SLIC superpixels algorithm for applications to non-imagery geospatial rasters*. International Journal of Applied Earth Observation and Geoinformation, https://doi.org/10.1016/j.jag.2022.102935
 
 ## Requirements
 
